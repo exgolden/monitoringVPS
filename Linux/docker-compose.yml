@@ -16,7 +16,8 @@ services:
       - grafana-data:/var/lib/grafana
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-      - ./grafana/provisioning/dashboards/nodeDashboard.json:/var/lib/grafana/dashboards/nodeDashboard.json
+      - ./grafana/provisioning/dashboards/nodeFull.json:/var/lib/grafana/dashboards/nodeFull.json
+      - ./grafana/provisioning/dashboards/nodeSimple.json:/var/lib/grafana/dashboards/nodeSimple.json
 
   prometheus:
     image: prom/prometheus:latest
