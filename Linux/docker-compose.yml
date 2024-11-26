@@ -10,32 +10,32 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     ports:
-      - '3000:3000'
+      - 3000:3000
     restart: unless-stopped
     volumes:
       - grafana-data:/var/lib/grafana
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-      - ./grafana/provisioning/dashboards/nodeFull.json:/var/lib/grafana/dashboards/nodeFull.json
-      - ./grafana/provisioning/dashboards/nodeSimple.json:/var/lib/grafana/dashboards/nodeSimple.json
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
 
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     ports:
-    - '9090:9090'
+    - 9090:9090
     restart: unless-stopped
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - --storage.tsdb.retention.time=15d
 
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
     container_name: node_exporter
-    command:
-      - '--path.rootfs=/host'
-    network_mode: host
-    pid: host
+    ports:
+      - 9100:9100
     restart: unless-stopped
     volumes:
-      - '/:/host:ro'
+      - /:/host:ro,rslave
+    command:
+      - --path.rootfs=/host
