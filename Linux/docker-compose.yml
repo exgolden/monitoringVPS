@@ -25,9 +25,7 @@ services:
     restart: unless-stopped
     volumes:
       - prometheus-data:/prometheus
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-    command:
-      - --storage.tsdb.retention.time=15d
+      - ./prometheus/prometheus.yml:/prometheus.yml:ro
 
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
