@@ -38,4 +38,4 @@ services:
     pid: host
     restart: unless-stopped
     volumes:
-      - '/:/host:ro'
+      - '/:/host:ro,rslave'
