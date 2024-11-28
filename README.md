@@ -3,7 +3,7 @@ Containerized Grafana stack configured to retrieve host and ~~container~~ metric
 1. Install Docker (Ubuntu): [Docker](https://docs.docker.com/engine/install/ubuntu/)
 2. Install Docker Compose plugin: [Compose](https://docs.docker.com/compose/install/linux/)
 3. Clone this repo: `git clone https://github.com/exgolden/Monitoring.git`
-3. Move into the Linux directory: `cd Monitorin/Linux`
+3. Move into the Linux directory: `cd Monitoring/Linux`
 4. Start the Docker Compose file: `docker compose up -d`
 5. Check that all containers are healthy: `docker ps` It should return something like this:
     ```
