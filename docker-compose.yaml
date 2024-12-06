@@ -1,6 +1,6 @@
 networks:
-  monitoring_network:
-    driver: bridge
+  saas_network:
+    external: true
 
 volumes:
   prometheus-data: {}
@@ -11,8 +11,12 @@ services:
     image: grafana/grafana:11.3.1
     container_name: grafana
     ports:
-      - '3000:3000'
+      - 3000:3000
     restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GF_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_PASSWORD}
+      - GF_SERVER_ROOT_URL=${GF_URL}
     volumes:
       - grafana-data:/var/lib/grafana
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
@@ -20,29 +24,29 @@ services:
       - ./grafana/provisioning/dashboards/nodeFull.json:/var/lib/grafana/dashboards/nodeFull.json
       - ./grafana/provisioning/dashboards/nodeSimple.json:/var/lib/grafana/dashboards/nodeSimple.json
     networks:
-      - monitoring_network
+      - saas_network
 
   prometheus:
     image: prom/prometheus:v2.43.0
     container_name: prometheus
     ports:
-    - '9090:9090'
+      - 9090:9090
     restart: unless-stopped
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
     networks:
-      - monitoring_network
+      - saas_network
 
   node_exporter:
     image: quay.io/prometheus/node-exporter:v1.8.2
     container_name: node_exporter
     ports:
-    - '9100:9100'
+      - 9100:9100
     command:
-      - '--path.rootfs=/host'
+      - "--path.rootfs=/host"
     restart: unless-stopped
     volumes:
-      - '/:/host:ro,rslave'
+      - "/:/host:ro,rslave"
     networks:
-      - monitoring_network
+      - saas_network
