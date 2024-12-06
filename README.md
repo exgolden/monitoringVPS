@@ -1,13 +1,13 @@
 # Monitoring VPS
 
 Containerized Grafana stack configured to retrieve host and ~~container~~ metrics from a Linux server.
-The main components are:
+The main components _inside docker network_ are:
 
-- Grafana: http://grafana:3000 - Prometheus: http://prometheus:9090
+- Grafana: http://grafana:3000
 
-- Node Exporter: http://node*exporter:9100 \_you can look for specific metrics at http:node_exporter:9100/metrics*
-  _Address are under the docker network, to acces each component outside the
-  network you need to use http://localhost:\<port\>_
+- Prometheus: http://prometheus:9090
+
+- Node Exporter: http://node_exporter:9100
 
 ---
 
