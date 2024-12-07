@@ -15,4 +15,4 @@ The main components _inside docker network_ are:
 
 1. Node Simplified may have an error on Disk Total
 2. Container monitoring currently on development
-
+3. Only Grafana service is accesibñe to general public
