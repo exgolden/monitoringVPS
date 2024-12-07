@@ -33,7 +33,7 @@ services:
       - 127.0.0.1:9090:9090 #Restricted to localhost
     restart: unless-stopped
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
       - prometheus-data:/prometheus
     networks:
       - saas_network
