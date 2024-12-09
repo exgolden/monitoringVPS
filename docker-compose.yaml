@@ -8,7 +8,7 @@ volumes:
 
 services:
   grafana:
-    image: grafana/grafana:11.3.1
+    image: grafana/grafana:9.5.3
     container_name: grafana
     ports:
       - 3000:3000
@@ -21,6 +21,8 @@ services:
       - GF_SERVER_ROOT_URL=${GF_URL}
       # Domain
       - GF_SERVER_DOMAIN=${GF_DOMAIN}
+      # Subpath enabling:
+      - GF_SERVER_SERVE_FROM_SUBPATH=true
     volumes:
       - grafana-data:/var/lib/grafana
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
