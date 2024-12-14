@@ -34,7 +34,8 @@ services:
     image: prom/prometheus:v2.43.0
     container_name: prometheus
     ports:
-      - 127.0.0.1:9090:9090 #Restricted to localhost
+      #- 127.0.0.1:9090:9090 #Restricted to localhost
+      - 9090:9090
     restart: unless-stopped
     volumes:
       - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
@@ -46,7 +47,9 @@ services:
     image: quay.io/prometheus/node-exporter:v1.8.2
     container_name: node_exporter
     ports:
-      - 127.0.0.1:9100:9100 #Restricted to localhost
+      #- 127.0.0.1:9100:9100 #Restricted to localhost
+      - 9100:9100
+
     command:
       - "--path.rootfs=/host"
     restart: unless-stopped
