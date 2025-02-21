@@ -11,6 +11,9 @@ The main components _inside docker network_ are:
 
 ---
 
+## Issues
+- Services are not restricted to the localhost.
+
 ### Notes
 
 1. Node Simplified may have an error on Disk Total

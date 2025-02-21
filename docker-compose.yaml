@@ -24,9 +24,6 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-      - ./grafana/provisioning/dashboards/nodeFull.json:/var/lib/grafana/dashboards/nodeFull.json
-      - ./grafana/provisioning/dashboards/nodeSimple.json:/var/lib/grafana/dashboards/nodeSimple.json
     networks:
       - saas_network
 
@@ -40,7 +37,7 @@ services:
       - 9090:9090
     restart: unless-stopped
     volumes:
-      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
     networks:
       - saas_network
