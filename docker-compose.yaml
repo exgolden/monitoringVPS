@@ -16,11 +16,8 @@ services:
     environment:
       # URL path to Grafana
       - GF_SERVER_ROOT_URL=${GF_URL}
-      # Domain
-      - GF_SERVER_DOMAIN=${GF_DOMAIN}
     volumes:
       - grafana-data:/var/lib/grafana
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
     networks:
       - saas_network
 
@@ -28,7 +25,7 @@ services:
     image: prom/prometheus:v2.43.0
     container_name: prometheus
     command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--config.file=/etc/prometheus/prometheus.yaml"
     ports:
       - 9090:9090
     restart: unless-stopped
@@ -42,7 +39,6 @@ services:
     image: quay.io/prometheus/node-exporter:v1.8.2
     container_name: node_exporter
     ports:
-      #- 127.0.0.1:9100:9100 #Restricted to localhost
       - 9100:9100
 
     command:
