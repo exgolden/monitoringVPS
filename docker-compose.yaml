@@ -18,6 +18,7 @@ services:
       - GF_SERVER_ROOT_URL=${GF_URL}
     volumes:
       - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
     networks:
       - saas_network
 
