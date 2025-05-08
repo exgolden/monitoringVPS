@@ -43,11 +43,20 @@ services:
     container_name: node_exporter
     ports:
       - 9100:9100
-
     command:
       - "--path.rootfs=/host"
     restart: unless-stopped
     volumes:
       - "/:/host:ro,rslave"
+    networks:
+      - saas_network
+  
+  blackbox:
+    image: prom/blackbox-exporter:latest
+    container_name: blackbox
+    ports:
+      - 9115:9115
+    volumes:
+      - ./blackbox.yaml:/etc/blackbox_exporter/config.yaml
     networks:
       - saas_network

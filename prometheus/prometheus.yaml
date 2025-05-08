@@ -12,3 +12,37 @@ scrape_configs:
   - job_name: "node"
     static_configs:
       - targets: ["node_exporter:9100"]
+
+    # Blackbox SSL cert probe
+  - job_name: "blackbox_https_cert"
+    metrics_path: /probe
+    params:
+      module: [https_cert]
+    static_configs:
+      - targets:
+          - https://xxx
+          - https://xxx
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox:9115
+
+    # Blackbox HTTP Health check
+  - job_name: "blackbox_http_2xx"
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+          - https://xxx
+          - https://xxx
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox:9115
