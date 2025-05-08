@@ -59,5 +59,20 @@ services:
       - 9115:9115
     volumes:
       - ./blackbox.yaml:/etc/blackbox_exporter/config.yaml
+    restart: unless-stopped
+    networks:
+      - saas_network
+  
+    cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - 8080:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    restart: unless-stopped
     networks:
       - saas_network
