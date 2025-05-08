@@ -22,6 +22,7 @@ services:
       - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
       - ./grafana/provisioning/dashboards/nodeLight.json:/var/lib/grafana/dashboards/nodeLight.json
       - ./grafana/provisioning/dashboards/blackbox.json:/var/lib/grafana/dashboards/blackbox.json
+      - ./grafana/provisioning/dashboards/cadvisor.json:/var/lib/grafana/dashboards/cadvisor.json
     networks:
       - saas_network
 

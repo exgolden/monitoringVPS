@@ -14,7 +14,9 @@
                 "target": {
                     "limit": 100,
                     "matchAny": false,
-                    "tags": [],
+                    "tags": [
+                        "Node"
+                    ],
                     "type": "dashboard"
                 },
                 "type": "dashboard"
@@ -1112,7 +1114,7 @@
     },
     "timepicker": {},
     "timezone": "browser",
-    "title": "Node Exporter Light",
+    "title": "Node Light",
     "uid": "rYdddlPWk",
     "version": 11
 }
