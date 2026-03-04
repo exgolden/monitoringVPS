@@ -80,7 +80,7 @@ services:
       - saas_network
   
   blackbox:
-    image: prom/blackbox-exporter:0.28.0
+    image: prom/blackbox-exporter:v0.28.0
     container_name: blackbox
     ports:
       - 9115:9115
@@ -91,7 +91,7 @@ services:
       - saas_network
   
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.56.2
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
     container_name: cadvisor
     ports:
       - 8080:8080
