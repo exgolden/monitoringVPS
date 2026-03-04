@@ -1,15 +1,23 @@
-# Monitoring VPS
+# Observability stack
+This repository contains a Docker based monitoring stack built around Prometheus 
+and Grafana, extended with log monitoring using Loki.
 
-Containerized Grafana stack configured to retrieve host and ~~container~~ metrics from a Linux server.
-The main components _inside docker network_ are:
+The stack provides:
+- Metrics collection (Prometheus)
+- Host metrics (Node Exporter)
+- Container metrics (cAdvisor)
+- HTTP/endpoint monitoring (Blackbox Exporter)
+- Log aggregation (Loki)
+- Log shipping from Docker (Promtail)
+- Visualization & alerting (Grafana)
 
-- Grafana: http://grafana:3000
+All services run inside a shared external Docker network: **saas_network**.
 
-- Prometheus: http://prometheus:9090
+### Persistent volumes
+- prometheus-data → Prometheus TSDB
+- grafana-data → Dashboards, alert rules, state
+- ./loki/data → Log storage
 
-- Node Exporter: http://node_exporter:9100
-
----
 
 ### Notes
 

@@ -3,12 +3,12 @@ networks:
     external: true
 
 volumes:
-  prometheus-data: {}
-  grafana-data: {}
+    prometheus-data: {}
+    grafana-data: {}
 
 services:
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:12.4.0
     container_name: grafana
     ports:
       - 3000:3000
@@ -41,6 +41,31 @@ services:
     networks:
       - saas_network
 
+  loki:
+    image: grafana/loki:2.9.8
+    container_name: loki
+    restart: unless-stopped
+    command: -config.file=/etc/loki/config.yml
+    volumes:
+      - ./loki/config.yml:/etc/loki/config.yml:ro
+      - ./loki/data:/loki
+    ports:
+      - 3100:3100
+    networks:
+      - saas_network
+
+  promtail:
+    image: grafana/promtail:2.9.8
+    container_name: promtail
+    restart: unless-stopped
+    command: -config.file=/etc/promtail/config.yml
+    volumes:
+      - ./promtail/config.yml:/etc/promtail/config.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - saas_network
+      
   node_exporter:
     image: quay.io/prometheus/node-exporter:v1.8.2
     container_name: node_exporter
@@ -55,7 +80,7 @@ services:
       - saas_network
   
   blackbox:
-    image: prom/blackbox-exporter:latest
+    image: prom/blackbox-exporter:0.28.0
     container_name: blackbox
     ports:
       - 9115:9115
@@ -66,7 +91,7 @@ services:
       - saas_network
   
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
+    image: gcr.io/cadvisor/cadvisor:v0.56.2
     container_name: cadvisor
     ports:
       - 8080:8080
