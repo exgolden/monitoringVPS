@@ -19,13 +19,23 @@ services:
       - GF_SERVER_ROOT_URL=${GF_URL}
     volumes:
       - grafana-data:/var/lib/grafana
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
       - ./grafana/provisioning/dashboards/nodeLight.json:/var/lib/grafana/dashboards/nodeLight.json
       - ./grafana/provisioning/dashboards/blackbox.json:/var/lib/grafana/dashboards/blackbox.json
       - ./grafana/provisioning/dashboards/cadvisor.json:/var/lib/grafana/dashboards/cadvisor.json
     networks:
       - saas_network
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 10
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   prometheus:
     image: prom/prometheus:v2.43.0
@@ -34,13 +44,23 @@ services:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--web.enable-lifecycle"
     ports:
-      - 9090:9090
+      - 127.0.0.1:9090:9090
     restart: unless-stopped
     volumes:
-      - ./prometheus:/etc/prometheus
+      - ./prometheus:/etc/prometheus:ro
       - prometheus-data:/prometheus
     networks:
       - saas_network
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9090/-/ready"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   loki:
     image: grafana/loki:2.9.8
@@ -51,9 +71,19 @@ services:
       - ./loki:/etc/loki:ro
       - loki-data:/loki
     ports:
-      - 3100:3100
+      - 127.0.0.1:3100:3100
     networks:
       - saas_network
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3100/ready"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   promtail:
     image: grafana/promtail:2.9.8
@@ -66,12 +96,17 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - saas_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
       
   node_exporter:
     image: quay.io/prometheus/node-exporter:v1.8.2
     container_name: node_exporter
     ports:
-      - 9100:9100
+      - 127.0.0.1:9100:9100
     command:
       - "--path.rootfs=/host"
     restart: unless-stopped
@@ -79,23 +114,33 @@ services:
       - "/:/host:ro,rslave"
     networks:
       - saas_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
   
   blackbox:
     image: prom/blackbox-exporter:v0.28.0
     container_name: blackbox
     ports:
-      - 9115:9115
+      - 127.0.0.1:9115:9115
     volumes:
-      - ./blackbox.yaml:/etc/blackbox_exporter/config.yaml
+      - ./blackbox.yaml:/etc/blackbox_exporter/config.yaml:ro
     restart: unless-stopped
     networks:
       - saas_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
   
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.49.1
     container_name: cadvisor
     ports:
-      - 8080:8080
+      - 127.0.0.1:8080:8080
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
@@ -104,3 +149,8 @@ services:
     restart: unless-stopped
     networks:
       - saas_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
