@@ -5,6 +5,7 @@ networks:
 volumes:
     prometheus-data: {}
     grafana-data: {}
+    loki-data: {}
 
 services:
   grafana:
@@ -47,8 +48,8 @@ services:
     restart: unless-stopped
     command: -config.file=/etc/loki/config.yml
     volumes:
-      - ./loki/config.yml:/etc/loki/config.yml:ro
-      - ./loki/data:/loki
+      - ./loki:/etc/loki:ro
+      - loki-data:/loki
     ports:
       - 3100:3100
     networks:
